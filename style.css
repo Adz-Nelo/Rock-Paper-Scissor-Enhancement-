@@ -34,7 +34,7 @@ h1 {
     margin-top: 25px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8)
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
 }
 
 .RPS:hover {
@@ -50,6 +50,15 @@ button:active {
     scale: .9;
 }
 
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+button:disabled:hover {
+    transform: none;
+}
+
 .stopBtn {
     font-size: 45px; 
     width: 100px; 
@@ -57,7 +66,7 @@ button:active {
     border-radius: 20px;
     margin: 5px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8)
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
 }
 
 .stopBtn:hover {
@@ -81,10 +90,21 @@ button:active {
     background-color: rgb(247, 247, 40);
 }
 
+.scoreContainer {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 24px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.scoreContainer p {
+    margin: 5px 0;
+}
+
 .resultContainer {
     text-align: center;
     font-size: 50px;
     font-family: 'Courier New', Courier, monospace;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.135);
+    margin-top: 20px;
 }
-
