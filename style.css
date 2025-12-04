@@ -1,0 +1,90 @@
+* {
+    background-color: rgb(238, 238, 238);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    scroll-behavior: smooth;
+}
+
+h1 {
+    font-size: 2.5rem;
+    position: relative;
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: 545;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.stopContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.RPS {
+    font-size: 45px; 
+    width: 100px; 
+    height: 100px;
+    border-radius: 20px;
+    margin: 5px;
+    margin-top: 25px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8)
+}
+
+.RPS:hover {
+    transform: scale(1.15); 
+}
+
+button:hover {
+    transition: .2s;
+    cursor: pointer;
+}
+
+button:active {
+    scale: .9;
+}
+
+.stopBtn {
+    font-size: 45px; 
+    width: 100px; 
+    height: 100px;
+    border-radius: 20px;
+    margin: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8)
+}
+
+.stopBtn:hover {
+    transition: transform 0.2s, box-shadow 0.2s, .2s;
+    transform: scale(1.15);
+}
+
+#rock {
+    background-color: rgb(247, 49, 45);
+}
+
+#paper {
+    background-color: rgb(77, 97, 248);
+}
+
+#scissor {
+    background-color: rgb(85, 224, 60);
+}
+
+#stop {
+    background-color: rgb(247, 247, 40);
+}
+
+.resultContainer {
+    text-align: center;
+    font-size: 50px;
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.135);
+}
+

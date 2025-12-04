@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPS Website</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="img/My Logo.png" type="image/png">
+</head>
+<body>
+    <h1><i>Nelo's RPS Game</i></h1>
+
+    <div class="container">
+        <button class="RPS" id="rock" value="Rock" onclick="rockBtn()">✊</button>
+        <button class="RPS" id="paper" value="Paper" onclick="paperBtn()">🤚</button>
+        <button class="RPS" id="scissor" value="Scissor" onclick="scissorBtn()">✌️</button>
+        <p id="playerPts"></p>
+        <p id="compPts"></p>
+    </div>
+
+    <div class="stopContainer">
+    <button class="stopBtn" id="stop" value="Stop!">🛑</button>
+
+    <script src="script.js"></script>
+    </div><br>
+
+    <div class="resultContainer">
+        <div id="Player Choice"></div>
+        <div id="Computer Choice"></div>
+        <div id="Choices"></div>
+        <div id="result"></div>
+    </div>
+</body>
+</html>
