@@ -3,32 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPS Website</title>
-
-    <link rel="stylesheet" href="style.css">
+    <title>RPS Arena | Nelo's Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     <link rel="icon" href="img/My Logo.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1><i>Nelo's RPS Game</i></h1>
-
     <div class="container">
-        <button class="RPS" id="rock" value="Rock">✊</button>
-        <button class="RPS" id="paper" value="Paper">🤚</button>
-        <button class="RPS" id="scissor" value="Scissor">✌️</button>
+        <header>
+            <div class="logo">
+                <i class="fas fa-fist-raised"></i>
+                <i class="far fa-hand-paper"></i>
+                <i class="fas fa-hand-scissors"></i>
+            </div>
+            <h1>RPS ARENA</h1>
+            <p class="subtitle">Battle the computer in this epic Rock Paper Scissors showdown!</p>
+        </header>
+
+        <div class="game-arena">
+            <div class="player-section">
+                <h2 class="section-title"><i class="fas fa-user"></i> PLAYER</h2>
+                <div class="choices">
+                    <button class="choice-btn" id="rock" value="Rock">✊</button>
+                    <button class="choice-btn" id="paper" value="Paper">🤚</button>
+                    <button class="choice-btn" id="scissor" value="Scissor">✌️</button>
+                </div>
+                <div class="score-display">
+                    <div class="score-value" id="playerPts">0</div>
+                    <div class="score-label">YOUR SCORE</div>
+                </div>
+            </div>
+
+            <div class="battle-area">
+                <div class="vs-container">
+                    <div class="player-choice" id="playerChoiceDisplay">?</div>
+                    <div class="vs">VS</div>
+                    <div class="computer-choice" id="computerChoiceDisplay">?</div>
+                </div>
+                
+                <div class="result-container">
+                    <div id="Choices">Make your move!</div>
+                    <div id="result">Ready to battle!</div>
+                </div>
+                
+                <div class="stop-container">
+                    <button class="stop-btn" id="stop" value="Stop!">🛑</button>
+                </div>
+            </div>
+
+            <div class="computer-section">
+                <h2 class="section-title"><i class="fas fa-robot"></i> COMPUTER</h2>
+                <div class="choices">
+                    <div class="choice-btn" style="background: rgba(255,255,255,0.1); cursor: default;">🤖</div>
+                    <div class="choice-btn" style="background: rgba(255,255,255,0.1); cursor: default;">💻</div>
+                    <div class="choice-btn" style="background: rgba(255,255,255,0.1); cursor: default;">⚡</div>
+                </div>
+                <div class="score-display">
+                    <div class="score-value" id="compPts">0</div>
+                    <div class="score-label">COMPUTER SCORE</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat-box">
+                <div class="stat-value" id="rounds">0</div>
+                <div class="stat-label">ROUNDS PLAYED</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="playerWins">0</div>
+                <div class="stat-label">PLAYER WINS</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="computerWins">0</div>
+                <div class="stat-label">COMPUTER WINS</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="ties">0</div>
+                <div class="stat-label">TIES</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Nelo's RPS Game | Built with <i class="fas fa-heart" style="color:#ff7675;"></i> and JavaScript with the assistant of Deepseek AI</p>
+            <p style="margin-top: 5px; font-size: 0.8rem;">© 2023 | Choose wisely and have fun!</p>
+        </footer>
     </div>
 
-    <div class="scoreContainer">
-        <p id="playerPts">Your Score: 0</p>
-        <p id="compPts">Computer Score: 0</p>
-    </div>
-
-    <div class="stopContainer">
-        <button class="stopBtn" id="stop" value="Stop!">🛑</button>
-    </div>
-
-    <div class="resultContainer">
-        <div id="Choices"></div>
-        <div id="result"></div>
+    <!-- Winner Banner -->
+    <div class="overlay" id="overlay"></div>
+    <div class="winner-banner" id="winnerBanner">
+        <h2 id="winnerTitle">Victory!</h2>
+        <p id="winnerMessage">You won the game!</p>
+        <p id="winnerScore">Final Score: 0 - 0</p>
+        <button id="playAgainBtn">Play Again</button>
     </div>
 
     <script src="script.js" type="text/javascript"></script>

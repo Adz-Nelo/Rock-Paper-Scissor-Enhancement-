@@ -1,5 +1,37 @@
+// Game variables - using your original structure
 let totalScore = { compScore: 0, playerScore: 0 };
+let rounds = 0;
+let playerWins = 0;
+let computerWins = 0;
+let ties = 0;
+let gameActive = true;
 
+// DOM elements
+const playerPts = document.getElementById('playerPts');
+const compPts = document.getElementById('compPts');
+const choicesDisplay = document.getElementById('Choices');
+const resultDisplay = document.getElementById('result');
+const stopBtn = document.getElementById('stop');
+const playerChoiceDisplay = document.getElementById('playerChoiceDisplay');
+const computerChoiceDisplay = document.getElementById('computerChoiceDisplay');
+const roundsDisplay = document.getElementById('rounds');
+const playerWinsDisplay = document.getElementById('playerWins');
+const computerWinsDisplay = document.getElementById('computerWins');
+const tiesDisplay = document.getElementById('ties');
+const winnerBanner = document.getElementById('winnerBanner');
+const overlay = document.getElementById('overlay');
+const winnerTitle = document.getElementById('winnerTitle');
+const winnerMessage = document.getElementById('winnerMessage');
+const winnerScore = document.getElementById('winnerScore');
+const playAgainBtn = document.getElementById('playAgainBtn');
+
+// Choice buttons
+const rockBtn = document.getElementById('rock');
+const paperBtn = document.getElementById('paper');
+const scissorBtn = document.getElementById('scissor');
+const rpsBtns = [rockBtn, paperBtn, scissorBtn];
+
+// Your original functions with enhancements
 function getCompChoice() {
     const rpsChoice = ['Rock', 'Paper', 'Scissor'];
     const randNum = Math.floor(Math.random() * 3);
@@ -21,50 +53,122 @@ function getResult(playerChoice, compChoice) {
 }
 
 function updateScoreDisplay() {
-    const playerPts = document.getElementById('playerPts');
-    const compPts = document.getElementById('compPts');
+    playerPts.textContent = totalScore.playerScore;
+    compPts.textContent = totalScore.compScore;
     
-    playerPts.textContent = `Your Score: ${totalScore.playerScore}`;
-    compPts.textContent = `Computer Score: ${totalScore.compScore}`;
+    // Update stats
+    roundsDisplay.textContent = rounds;
+    playerWinsDisplay.textContent = playerWins;
+    computerWinsDisplay.textContent = computerWins;
+    tiesDisplay.textContent = ties;
     
-    console.log('Player Score:', totalScore.playerScore);
-    console.log('Computer Score:', totalScore.compScore);
+    // Color coding based on score difference
+    if (totalScore.playerScore > totalScore.compScore) {
+        playerPts.style.color = '#55efc4'; // Green for leading
+        compPts.style.color = '#ff7675'; // Red for trailing
+    } else if (totalScore.playerScore < totalScore.compScore) {
+        playerPts.style.color = '#ff7675'; // Red for trailing
+        compPts.style.color = '#55efc4'; // Green for leading
+    } else {
+        playerPts.style.color = '#74b9ff'; // Blue for tie
+        compPts.style.color = '#74b9ff'; // Blue for tie
+    }
 }
 
 function showResult(result, playerChoice, compChoice) {
-    const choices = document.getElementById('Choices');
-    const resultDiv = document.getElementById('result');
-
     if (result === 'win') {
-        resultDiv.innerText = 'You Win! 🤩';
+        resultDisplay.innerText = 'You Win! 🤩';
+        resultDisplay.style.color = '#55efc4';
+        playerChoiceDisplay.classList.add('win-glow');
     } else if (result === 'tie') {
-        resultDiv.innerText = "It's a Tie! ⚔️";
+        resultDisplay.innerText = "It's a Tie! ⚔️";
+        resultDisplay.style.color = '#74b9ff';
     } else {
-        resultDiv.innerText = 'You Lose! 🥹';
+        resultDisplay.innerText = 'You Lose! 🥹';
+        resultDisplay.style.color = '#ff7675';
+        computerChoiceDisplay.classList.add('win-glow');
     }
 
-    choices.innerText = `${playerChoice} vs ${compChoice}`;
+    choicesDisplay.innerText = `${playerChoice} vs ${compChoice}`;
+    
+    // Add pulse animation
+    resultDisplay.classList.add('pulse');
+    setTimeout(() => {
+        resultDisplay.classList.remove('pulse');
+        playerChoiceDisplay.classList.remove('win-glow');
+        computerChoiceDisplay.classList.remove('win-glow');
+    }, 1500);
+}
+
+function updateChoiceDisplays(playerChoice, compChoice) {
+    // Reset and animate
+    playerChoiceDisplay.style.transform = 'scale(0.8)';
+    computerChoiceDisplay.style.transform = 'scale(0.8)';
+    
+    // Set emojis
+    const emojis = {
+        'Rock': '✊',
+        'Paper': '🤚',
+        'Scissor': '✌️'
+    };
+    
+    playerChoiceDisplay.textContent = emojis[playerChoice];
+    computerChoiceDisplay.textContent = emojis[compChoice];
+    
+    // Add active class for animation
+    playerChoiceDisplay.classList.add('active');
+    computerChoiceDisplay.classList.add('active');
+    
+    // Animate back
+    setTimeout(() => {
+        playerChoiceDisplay.style.transform = 'scale(1)';
+        computerChoiceDisplay.style.transform = 'scale(1)';
+        
+        setTimeout(() => {
+            playerChoiceDisplay.classList.remove('active');
+            computerChoiceDisplay.classList.remove('active');
+        }, 300);
+    }, 300);
 }
 
 function onClickRPS(playerChoice) {
-    const resultDiv = document.getElementById('result');
-    const choices = document.getElementById('Choices');
+    if (!gameActive) return;
     
     // Disable buttons while computer is "thinking"
-    const rpsBtns = document.querySelectorAll('.RPS');
-    rpsBtns.forEach(btn => btn.disabled = true);
+    rpsBtns.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+    });
     
-    // Show thinking message
-    resultDiv.innerText = '🤔 Computer is thinking...';
-    choices.innerText = '';
+    // Show thinking message with animation
+    resultDisplay.innerText = 'Computer is thinking...';
+    resultDisplay.classList.add('thinking');
+    choicesDisplay.innerText = '';
+    
+    // Reset choice displays
+    playerChoiceDisplay.textContent = '?';
+    computerChoiceDisplay.textContent = '?';
     
     // Wait 1.5 seconds before showing result
     setTimeout(() => {
+        resultDisplay.classList.remove('thinking');
         const compChoice = getCompChoice();
         const result = getResult(playerChoice, compChoice);
 
-        if (result === 'win') totalScore.playerScore++;
-        else if (result === 'lose') totalScore.compScore++;
+        // Update choice displays with animation
+        updateChoiceDisplays(playerChoice, compChoice);
+
+        if (result === 'win') {
+            totalScore.playerScore++;
+            playerWins++;
+        } else if (result === 'lose') {
+            totalScore.compScore++;
+            computerWins++;
+        } else {
+            ties++;
+        }
+        
+        rounds++;
 
         updateScoreDisplay();
         showResult(result, playerChoice, compChoice);
@@ -77,49 +181,78 @@ function onClickRPS(playerChoice) {
             }, 2000);
         } else {
             // Re-enable buttons for next round
-            rpsBtns.forEach(btn => btn.disabled = false);
+            setTimeout(() => {
+                rpsBtns.forEach(btn => {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                });
+            }, 1500);
         }
     }, 1500);
 }
 
 function declareWinner() {
-    const resultDiv = document.getElementById('result');
-    const choices = document.getElementById('Choices');
+    gameActive = false;
     
-    // Show who won the game
     if (totalScore.playerScore >= 10) {
-        resultDiv.innerText = '🎉 YOU WIN THE GAME! 🎉';
-        choices.innerText = `Final Score: ${totalScore.playerScore} - ${totalScore.compScore}`;
+        winnerTitle.textContent = '🎉 VICTORY! 🎉';
+        winnerMessage.textContent = 'You won the game!';
+        winnerTitle.style.color = '#55efc4';
     } else {
-        resultDiv.innerText = '💻 COMPUTER WINS THE GAME! 💻';
-        choices.innerText = `Final Score: ${totalScore.playerScore} - ${totalScore.compScore}`;
+        winnerTitle.textContent = '💻 DEFEAT! 💻';
+        winnerMessage.textContent = 'Computer won the game!';
+        winnerTitle.style.color = '#ff7675';
     }
     
-    // Keep buttons disabled - game is over
-}
-
-function playGame() {
-    const rpsBtns = document.querySelectorAll('.RPS');
-    rpsBtns.forEach((btn) => {
-        btn.onclick = () => onClickRPS(btn.value);
-    });
-
-    const stopBtn = document.getElementById('stop');
-    stopBtn.onclick = () => endGame();
+    winnerScore.textContent = `Final Score: ${totalScore.playerScore} - ${totalScore.compScore}`;
+    
+    // Show winner banner
+    overlay.classList.add('show');
+    winnerBanner.classList.add('show');
 }
 
 function endGame() {
     // Reset everything
     totalScore.playerScore = 0;
     totalScore.compScore = 0;
+    rounds = 0;
+    playerWins = 0;
+    computerWins = 0;
+    ties = 0;
+    gameActive = true;
 
-    document.getElementById('Choices').innerText = '';
-    document.getElementById('result').innerText = 'Game Reset! Click to play again 🎮';
+    choicesDisplay.innerText = '';
+    resultDisplay.innerText = 'Game Reset! Click to play again 🎮';
+    resultDisplay.style.color = '#6c5ce7';
+    
+    // Reset choice displays
+    playerChoiceDisplay.textContent = '?';
+    computerChoiceDisplay.textContent = '?';
+    
     updateScoreDisplay();
     
     // Re-enable buttons
-    const rpsBtns = document.querySelectorAll('.RPS');
-    rpsBtns.forEach(btn => btn.disabled = false);
+    rpsBtns.forEach(btn => {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+    });
+    
+    // Hide winner banner if it's showing
+    overlay.classList.remove('show');
+    winnerBanner.classList.remove('show');
 }
 
+function playGame() {
+    // Set up event listeners
+    rockBtn.onclick = () => onClickRPS('Rock');
+    paperBtn.onclick = () => onClickRPS('Paper');
+    scissorBtn.onclick = () => onClickRPS('Scissor');
+    stopBtn.onclick = endGame;
+    playAgainBtn.onclick = endGame;
+    
+    // Initialize display
+    updateScoreDisplay();
+}
+
+// Initialize the game
 playGame();
