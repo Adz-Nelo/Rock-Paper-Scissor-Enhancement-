@@ -21,6 +21,12 @@
             <p class="subtitle">Battle the computer in this epic Rock Paper Scissors showdown!</p>
         </header>
 
+        <div class="sound-control">
+            <button id="soundToggle" class="sound-btn">
+                <i class="fas fa-volume-up"></i> Sound ON
+            </button>
+        </div>
+
         <div class="game-arena">
             <div class="player-section">
                 <h2 class="section-title"><i class="fas fa-user"></i> PLAYER</h2>
@@ -99,6 +105,28 @@
         <p id="winnerScore">Final Score: 0 - 0</p>
         <button id="playAgainBtn">Play Again</button>
     </div>
+
+    <audio id="clickSound" preload="auto">
+        <source src="sound/switch-sound (1).wav" type="audio/wav">
+    </audio>
+    <audio id="winSound" preload="auto">
+        <source src="sound/electro-win-sound.wav" type="audio/wav">
+    </audio>
+    <audio id="loseSound" preload="auto">
+        <source src="sound/lose-sound.wav" type="audio/wav">
+    </audio>
+    <audio id="tieSound" preload="auto">
+        <source src="sound/sword-tie.wav" type="audio/wav">
+    </audio>
+    <audio id="resetSound" preload="auto">
+        <source src="sound/switch-sound (1).wav" type="audio/wav">
+    </audio>
+    <audio id="gameWinSound" preload="auto">
+        <source src="sound/victory-(dragonborn).wav" type="audio/wav">
+    </audio>
+    <audio id="gameLoseSound" preload="auto">
+        <source src="sound/game-over.wav" type="audio/wav">
+    </audio>
 
     <script src="script.js" type="text/javascript"></script>
 </body>

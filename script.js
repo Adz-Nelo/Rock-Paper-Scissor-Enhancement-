@@ -5,6 +5,7 @@ let playerWins = 0;
 let computerWins = 0;
 let ties = 0;
 let gameActive = true;
+let soundEnabled = true;
 
 // DOM elements
 const playerPts = document.getElementById('playerPts');
@@ -24,6 +25,16 @@ const winnerTitle = document.getElementById('winnerTitle');
 const winnerMessage = document.getElementById('winnerMessage');
 const winnerScore = document.getElementById('winnerScore');
 const playAgainBtn = document.getElementById('playAgainBtn');
+const soundToggle = document.getElementById('soundToggle');
+
+// Get audio elements
+const clickSound = document.getElementById('clickSound');
+const winSound = document.getElementById('winSound');
+const loseSound = document.getElementById('loseSound');
+const tieSound = document.getElementById('tieSound');
+const resetSound = document.getElementById('resetSound');
+const gameWinSound = document.getElementById('gameWinSound');
+const gameLoseSound = document.getElementById('gameLoseSound');
 
 // Choice buttons
 const rockBtn = document.getElementById('rock');
@@ -80,13 +91,16 @@ function showResult(result, playerChoice, compChoice) {
         resultDisplay.innerText = 'You Win! 🤩';
         resultDisplay.style.color = '#55efc4';
         playerChoiceDisplay.classList.add('win-glow');
+        playSound(winSound)
     } else if (result === 'tie') {
         resultDisplay.innerText = "It's a Tie! ⚔️";
         resultDisplay.style.color = '#74b9ff';
+        playSound(tieSound)
     } else {
         resultDisplay.innerText = 'You Lose! 🥹';
         resultDisplay.style.color = '#ff7675';
         computerChoiceDisplay.classList.add('win-glow');
+        playSound(loseSound)
     }
 
     choicesDisplay.innerText = `${playerChoice} vs ${compChoice}`;
@@ -131,8 +145,42 @@ function updateChoiceDisplays(playerChoice, compChoice) {
     }, 300);
 }
 
+// Play sound helper function
+function playSound(soundElement) {
+    if (!soundEnabled) return;
+    
+    try {
+        soundElement.currentTime = 0; // Reset to start
+        const playPromise = soundElement.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Sound play failed:", error);
+            });
+        }
+    } catch (error) {
+        console.log("Sound error:", error);
+    }
+}
+
+// Toggle sound function
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    
+    if (soundEnabled) {
+        soundToggle.innerHTML = '<i class="fas fa-volume-up"></i> Sound ON';
+        soundToggle.classList.remove('muted');
+        playSound(clickSound); // Play click sound when turning on
+    } else {
+        soundToggle.innerHTML = '<i class="fas fa-volume-mute"></i> Sound OFF';
+        soundToggle.classList.add('muted');
+    }
+}
+
 function onClickRPS(playerChoice) {
     if (!gameActive) return;
+
+    playSound(clickSound)
     
     // Disable buttons while computer is "thinking"
     rpsBtns.forEach(btn => {
@@ -198,10 +246,12 @@ function declareWinner() {
         winnerTitle.textContent = '🎉 VICTORY! 🎉';
         winnerMessage.textContent = 'You won the game!';
         winnerTitle.style.color = '#55efc4';
+        playSound(gameWinSound)
     } else {
         winnerTitle.textContent = '💻 DEFEAT! 💻';
         winnerMessage.textContent = 'Computer won the game!';
         winnerTitle.style.color = '#ff7675';
+        playSound(gameLoseSound)
     }
     
     winnerScore.textContent = `Final Score: ${totalScore.playerScore} - ${totalScore.compScore}`;
@@ -213,6 +263,7 @@ function declareWinner() {
 
 function endGame() {
     // Reset everything
+    playSound(resetSound)
     totalScore.playerScore = 0;
     totalScore.compScore = 0;
     rounds = 0;
@@ -249,6 +300,9 @@ function playGame() {
     scissorBtn.onclick = () => onClickRPS('Scissor');
     stopBtn.onclick = endGame;
     playAgainBtn.onclick = endGame;
+
+    // Add sound toggle listener
+    soundToggle.onclick = toggleSound;
     
     // Initialize display
     updateScoreDisplay();
